@@ -12,13 +12,21 @@ app.use(express.static('public'));
 app.use(morgan("dev"));
 //body parser
 app.use(express.urlencoded({ extended: false }));
+//Routers
+const {wikiRouter} = require('./routes/wiki');
+const {userRouter} = require('./routes/users');
+//localhost:3000/wiki
+app.use('/wiki', wikiRouter);
+//localhost:3000/user
+app.use('/user', userRouter);
 
 db.authenticate().then(() =>{
   console.log('connected to the database');
 })
 
+//Homepage - localhost:3000/
 app.get('/', (req, res, next) => {
-  res.send(layout());
+  res.redirect('/wiki');
 })
 
 const connection = async() => {
@@ -28,10 +36,11 @@ const connection = async() => {
     app.listen(port, function(){
       console.log("Connecting")
     })
-    
-    
+
+
   } catch (error) {
     console.log(error)
   }
 }
 
+connection();
