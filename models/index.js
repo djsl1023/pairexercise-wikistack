@@ -9,7 +9,7 @@ const Page = db.define('page', {
     title: {
       type: Sequelize.STRING,
       allowNull: false,
-      
+
     },
     slug: {
       type: Sequelize.STRING,
@@ -23,13 +23,12 @@ const Page = db.define('page', {
     status: {
       type: Sequelize.ENUM('open', 'closed')
     },
-    hooks: {
-      beforeValidate: (page, options) => {
-        page.slug = generateSlug(page.title)
-      }
-    }
-  });
-  
+});
+
+Page.beforeValidate(function(page){
+  page.slug = generateSlug(page.title);
+})
+
   const User = db.define('user', {
     name: {
       type: Sequelize.STRING,
@@ -38,10 +37,10 @@ const Page = db.define('page', {
     email: {
       type: Sequelize.STRING,
       allowNull: false,
-     validate: {
+      validate: {
          isEmail: true,
      }
     }
   });
-  
+
   module.exports = { db, Page, User };
