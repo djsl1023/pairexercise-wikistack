@@ -21,6 +21,17 @@ app.get('/', (req, res, next) => {
   res.send(layout());
 })
 
-app.listen(port, function(){
-  console.log("Connecting")
-})
+const connection = async() => {
+  try {
+    await db.sync({force:true})
+    console.log('db is synced')
+    app.listen(port, function(){
+      console.log("Connecting")
+    })
+    
+    
+  } catch (error) {
+    console.log(error)
+  }
+}
+
